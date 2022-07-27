@@ -9,7 +9,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final Repository repo = RepositoryImpl();
+  Repository repo = RepositoryImpl();
   HomeBloc() : super(HomeInitial()) {
     on<FetchHomeList>(onFetchHomeList);
   }
