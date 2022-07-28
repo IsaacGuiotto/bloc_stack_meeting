@@ -14,6 +14,7 @@ class LoginState extends Equatable {
     this.error = "",
     this.success = false,
   });
+
   const LoginState.initial()
       : email = "",
         pass = "",
@@ -29,12 +30,11 @@ class LoginState extends Equatable {
     bool? success,
   }) {
     return LoginState(
-      email: email ?? this.email,
-      pass: pass ?? this.pass,
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      success: success ?? this.success,
-    );
+        email: email ?? this.email,
+        pass: pass ?? this.pass,
+        isLoading: isLoading ?? this.isLoading,
+        error: error ?? this.error,
+        success: success ?? this.success);
   }
 
   @override

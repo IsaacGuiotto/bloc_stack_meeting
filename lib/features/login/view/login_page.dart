@@ -35,8 +35,8 @@ class LoginPage extends StatelessWidget {
                   border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                 ),
-                onChanged: (value) =>
-                    BlocProvider.of<LoginCubit>(context).onEmailChange(value),
+                onChanged: (value) => BlocProvider.of<LoginCubit>(context)
+                    .onEmailChanged(_emailTextController.text),
                 validator: (value) => null,
               ),
               const SizedBox(height: 16),
@@ -51,18 +51,18 @@ class LoginPage extends StatelessWidget {
                   border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                 ),
-                onChanged: (value) =>
-                    BlocProvider.of<LoginCubit>(context).onPassChange(value),
+                onChanged: (value) => BlocProvider.of<LoginCubit>(context)
+                    .onPassChanged(_passTextController.text),
                 validator: (value) => null,
               ),
               const SizedBox(height: 24),
               BlocConsumer<LoginCubit, LoginState>(
-                listenWhen: (oldS, newS) => oldS.success != newS.success,
                 listener: (context, state) {
                   if (state.success) {
                     Navigator.pushNamed(context, "/home");
                   }
                 },
+                buildWhen: (oldS, newS) => oldS.isLoading != newS.isLoading,
                 builder: (context, state) {
                   return ElevatedButton(
                     onPressed: () {

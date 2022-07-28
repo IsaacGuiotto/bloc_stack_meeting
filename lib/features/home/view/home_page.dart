@@ -1,7 +1,6 @@
+import 'package:bloc_stack_meeting/features/home/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -49,49 +48,54 @@ class _HomePageState extends State<HomePage> {
                   height: 24,
                 ),
                 BlocBuilder<HomeBloc, HomeState>(
-                  bloc: _homeBloc,
-                  buildWhen: (oldS, newS) => oldS != newS,
-                  builder: (context, state) {
-                    if (state is HomeLoading) {
-                      return const Text(
-                        "Loading...",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24),
-                      );
-                    }
+                    bloc: _homeBloc,
+                    builder: (context, state) {
+                      if (state is HomeLoading) {
+                        return const Text(
+                          "Loading...",
+                          style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
+                        );
+                      }
 
-                    if (state is HomeError) {
-                      return Text(
-                        state.error,
-                        style: const TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24),
-                      );
-                    }
-                    if (state is HomeList) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.homeList.length,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              child: Card(
-                                elevation: 5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(state.homeList[i]),
+                      if (state is HomeError) {
+                        return Text(
+                          state.error,
+                          style: const TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24),
+                        );
+                      }
+                      if (state is HomeList) {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.homeList.length,
+                            itemBuilder: (context, i) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Card(
+                                  elevation: 5,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(state.homeList[i]),
+                                  ),
                                 ),
-                              ),
-                            );
-                          });
-                    }
-                    return Container();
-                  },
+                              );
+                            });
+                      }
+                      return Container();
+                    }),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
+                  ),
+                  child: const Text("Log out"),
                 ),
               ],
             ),

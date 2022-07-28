@@ -19,11 +19,13 @@ class LoginCubit extends Cubit<LoginState> {
     if (result.hasError) {
       emit(state.copyWith(error: result.error));
       emit(state.copyWith(isLoading: false));
+    } else {
+      emit(state.copyWith(success: true));
+      emit(state.copyWith(isLoading: false));
     }
-    emit(state.copyWith(success: true));
   }
 
-  onEmailChange(String email) => emit(state.copyWith(email: email));
+  onEmailChanged(String email) => emit(state.copyWith(email: email));
 
-  onPassChange(String pass) => emit(state.copyWith(pass: pass));
+  onPassChanged(String pass) => emit(state.copyWith(pass: pass));
 }

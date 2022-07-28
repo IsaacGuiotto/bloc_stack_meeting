@@ -7,50 +7,43 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final repoStub = RepositoryStub();
-
   var sut = HomeBloc();
   sut.repo = repoStub;
   var state = sut.state;
 
-  tearDown(() => sut.close());
+  test("bloc has stated", () {
+    expect(state, HomeInitial());
+  });
 
-  group('Event FetchHomeList', () {
-    test("bloc started", () {
-      expect(state, HomeInitial());
-    });
+  group("event FetchHomeList", () {
+    blocTest("Everything went fine, expects 2 states",
+        setUp: () {
+          sut = HomeBloc();
+          sut.repo = repoStub;
+        },
+        tearDown: () => sut.close(),
+        build: () => sut,
+        act: (HomeBloc bloc) => bloc.add(FetchHomeList()),
+        expect: () => [
+              HomeLoading(),
+              HomeList(
+                homeList: const ["dummy1", "dummy2"],
+              ),
+            ]);
 
-    blocTest(
-      'everything went fine, expects 2 states',
-      setUp: () {
-        sut = HomeBloc();
-        sut.repo = repoStub;
-      },
-      tearDown: () {
-        sut.close();
-      },
-      build: () => sut,
-      act: (HomeBloc bloc) => bloc.add(FetchHomeList()),
-      expect: () => [
-        const HomeLoading(),
-        const HomeList(homeList: ["dummy1", "dummy2"])
-      ],
-    );
-
-    blocTest(
-      'something went wrong, expects 1 error and 1 loading state',
-      setUp: () {
-        repoStub.hasError = true;
-        sut = HomeBloc();
-        sut.repo = repoStub;
-      },
-      tearDown: () {
-        sut.close();
-      },
-      build: () => sut,
-      act: (HomeBloc bloc) => bloc.add(FetchHomeList()),
-      expect: () =>
-          [const HomeLoading(), const HomeError(error: "Server error!")],
-    );
+    blocTest("Everything went wrong, expects 1 loading and 1 error state",
+        setUp: () {
+          repoStub.hasError = true;
+          sut = HomeBloc();
+          sut.repo = repoStub;
+        },
+        tearDown: () => sut.close(),
+        build: () => sut,
+        act: (HomeBloc bloc) => bloc.add(FetchHomeList()),
+        expect: () => [
+              HomeLoading(),
+              HomeError(error: "Server error!"),
+            ]);
   });
 }
 
