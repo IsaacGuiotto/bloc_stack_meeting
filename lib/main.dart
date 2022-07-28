@@ -1,5 +1,6 @@
 import 'package:bloc_stack_meeting/features/home/bloc/home_bloc.dart';
 import 'package:bloc_stack_meeting/features/home/view/home_page.dart';
+import 'package:bloc_stack_meeting/features/login/bloc/login_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: <String, Widget Function(BuildContext)>{
-        "/": (context) => LoginPage(),
+        "/": (context) => BlocProvider(
+              create: (context) => LoginCubit(),
+              child: LoginPage(),
+            ),
         "/home": (context) => BlocProvider(
               create: (context) => HomeBloc(),
               child: HomePage(),

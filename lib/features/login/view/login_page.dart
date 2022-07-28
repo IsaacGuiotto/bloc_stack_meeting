@@ -1,10 +1,14 @@
+import 'package:bloc_stack_meeting/features/login/bloc/login_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _passTextController = TextEditingController();
+  final TextEditingController _emailTextController =
+      TextEditingController(text: "user@bloc.com");
+  final TextEditingController _passTextController =
+      TextEditingController(text: "bloc123");
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +37,15 @@ class LoginPage extends StatelessWidget {
                   border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                 ),
+                onChanged: (value) =>
+                    BlocProvider.of<LoginCubit>(context).onEmailChange(value),
                 validator: (value) => null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _passTextController,
                 cursorColor: Colors.green,
+                obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "Password",
                   focusedBorder: UnderlineInputBorder(
@@ -46,17 +53,31 @@ class LoginPage extends StatelessWidget {
                   border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                 ),
+                onChanged: (value) =>
+                    BlocProvider.of<LoginCubit>(context).onPassChange(value),
                 validator: (value) => null,
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/home");
+              BlocConsumer<LoginCubit, LoginState>(
+                listenWhen: (oldS, newS) => oldS.success != newS.success,
+                listener: (context, state) {
+                  if (state.success) {
+                    Navigator.pushNamed(context, "/home");
+                  }
                 },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                ),
-                child: const Text("Sign In"),
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<LoginCubit>(context).onLogin();
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                    ),
+                    child: state.isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text("Sign In"),
+                  );
+                },
               ),
             ],
           ),
