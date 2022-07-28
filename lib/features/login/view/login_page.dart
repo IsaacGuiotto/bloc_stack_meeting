@@ -5,10 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  final TextEditingController _emailTextController =
-      TextEditingController(text: "user@bloc.com");
-  final TextEditingController _passTextController =
-      TextEditingController(text: "bloc123");
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class LoginPage extends StatelessWidget {
                 controller: _emailTextController,
                 cursorColor: Colors.green,
                 decoration: const InputDecoration(
-                  hintText: "Email",
+                  hintText: "email: user@bloc.com",
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                   border: UnderlineInputBorder(
@@ -47,7 +45,7 @@ class LoginPage extends StatelessWidget {
                 cursorColor: Colors.green,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  hintText: "Password",
+                  hintText: "pass: bloc123",
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.green)),
                   border: UnderlineInputBorder(
